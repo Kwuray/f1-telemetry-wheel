@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+xterm
+qmake -o Makefile main.pro
+sudo make
+echo Press enter to quit Terminal
+read
