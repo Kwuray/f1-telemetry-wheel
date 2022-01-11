@@ -1,5 +1,6 @@
 #include <QApplication>
 #include <QPushButton>
+#include <QtDeclarativeView>
 
 int main(int argc, char *argv[]) {
   QApplication app(argc, argv);
@@ -7,7 +8,8 @@ int main(int argc, char *argv[]) {
 
     // Création d'un widget qui servira de fenêtre
     QWidget fenetre;
-    fenetre::showMaximized;
+    QDeclarativeView view;
+    view.showFullScreen();
 
     // Création du bouton, ayant pour parent la "fenêtre"
     QPushButton bouton("Pimp mon bouton !", &fenetre);
