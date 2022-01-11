@@ -1,6 +1,6 @@
 #include <QApplication>
 #include <QPushButton>
-#include <QtDeclarativeView>
+#include <QDeclarativeView>
 
 int main(int argc, char *argv[]) {
   QApplication app(argc, argv);
