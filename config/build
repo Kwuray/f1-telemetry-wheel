@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
+make clean
 qmake -o Makefile main.pro
 sudo make
 echo Press enter to quit Terminal
 read
+reset

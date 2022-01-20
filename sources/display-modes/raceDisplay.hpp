@@ -23,6 +23,7 @@ public slots:
     //brake = new brakeBar(this);
     throttle->move(100, 100);
     this->show();
+    QObject::connect(throttle, SIGNAL(valueChanged()), throttle, SLOT(update()));
   };
 };
 #endif
