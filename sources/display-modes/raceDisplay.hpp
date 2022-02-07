@@ -2,28 +2,32 @@
 #define DEF_RACEDISPLAY
 
 #include <QApplication>
+#include <QObject>
 #include <QWidget>
 #include "../elements/throttleBar.hpp"
 #include "../elements/brakeBar.hpp"
 
 class raceDisplay : public QWidget {
+  Q_OBJECT
 private:
+  Game* m_selectedGame;
+  throttleBar* throttle;
+
   //brakeBar* brake;
 
 public:
-  throttleBar* throttle;
-public slots:
-  void updateData(int* x) {
-    throttle->setValue(*x);
-    throttle->update();
+
+  raceDisplay (Game* selectedGame) {
+    m_selectedGame = selectedGame;
   };
-  raceDisplay () {
-    this->setStyleSheet("background-color: black;");
-    throttle = new throttleBar(this);
-    //brake = new brakeBar(this);
-    throttle->move(100, 100);
-    this->show();
-    QObject::connect(throttle, SIGNAL(valueChanged()), throttle, SLOT(update()));
-  };
+
+  public slots:
+    void initDisplay(void* manager) {
+      throttle = new throttleBar(this, m_selectedGame, manager);
+      throttle->move(100, 100);
+      throttle->setValue(58);
+      this->setStyleSheet("background-color: black;");
+      this->show();
+    };
 };
 #endif

@@ -1,32 +1,22 @@
 #include <QApplication>
-#include <QPushButton>
 #include "display-modes/raceDisplay.hpp"
 #include "feedThread.hpp"
+#include "../headers/games/games.hpp"
 #include <thread>
-#include <iostream>
 #include <chrono>
 #include <QThread>
-/*
-void backgroundTask(QApplication* app, raceDisplay* currentScreen) {
-  std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-  int x = 0;
-  while (true) {
-    std::this_thread::sleep_for(std::chrono::milliseconds(500));
-    currentScreen->updateData(&x);
-    x = x + 1;
-    if (x > 100) {
-      x = 0;
-    }
-  }
-}
-*/
+
 int main(int argc, char *argv[]) {
+  //Sélection du jeu/format des paquets
+  //Rendre cette variable publique ???
+  Game selectedGame = Game::F12020;
+
+  //Création de l'application
   QApplication app(argc, argv);
-  raceDisplay screen;
-  feedThread dataFeed(&screen);
+  raceDisplay screen(&selectedGame);
+  //Création Thread qui gèrera les paquets
+  dataListenerThread dataFeed(&selectedGame, &screen);
   dataFeed.start();
-  //std::thread dataFeed(backgroundTask, &app, &screen);
-  //dataFeed.detach();
   app.exec();
   return 0;
 }
