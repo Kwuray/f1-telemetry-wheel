@@ -19,8 +19,7 @@
 #include "packets-structures/motion.hpp"
 #include "packets-structures/participants.hpp"
 #include "packets-structures/session.hpp"
-#include "../../games/games.hpp"
-
+#include <QThread>
 
 
 class F12020_packetManager : public QObject {
@@ -70,6 +69,11 @@ private:
 
 
 public:
+  F12020_packetManager(QThread* dataFeed) {
+    QObject::connect(dataFeed, SIGNAL(dataReceived(void*, int*)), this, SLOT(handlePacket(void*, int*)));
+  };
+
+public slots:
   //Cette fonction permet de déterminer le type de paquet, et selon, mettre à jour les données
   void handlePacket(void* rawPacket, int* rawPacketSize) {
     memset(&header, 0, sizeof header);

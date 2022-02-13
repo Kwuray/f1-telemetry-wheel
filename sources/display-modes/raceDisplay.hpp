@@ -8,8 +8,9 @@
 #include "../elements/brakeBar.hpp"
 
 class raceDisplay : public QWidget {
-  Q_OBJECT
+
 private:
+  Q_OBJECT
   Game* m_selectedGame;
   throttleBar* throttle;
 
@@ -22,7 +23,7 @@ public:
   };
 
   public slots:
-    void initDisplay(void* manager) {
+    void initDisplay(managerUnion* manager) {
       throttle = new throttleBar(this, m_selectedGame, manager);
       throttle->move(100, 100);
       throttle->setValue(58);

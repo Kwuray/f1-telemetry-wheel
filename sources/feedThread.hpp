@@ -32,17 +32,19 @@ class dataListenerThread : public QThread {
 public:
 
   //Initialisation de tout le nécessaire pour recevoir des paquets UDP.
-  dataListenerThread(Game* selectedGame, raceDisplay* display) {
-    QObject::connect(this, SIGNAL(managerReady(void*)), display, SLOT(initDisplay(void*)));
+  dataListenerThread (Game* selectedGame, raceDisplay* display) {
+    QObject::connect(this, SIGNAL(managerReady(managerUnion*)), display, SLOT(initDisplay(managerUnion*)));
     m_selectedGame = selectedGame;
   };
 
 signals:
-    void managerReady(void* manager);
+    void managerReady(managerUnion* manager);
+signals:
+    void dataReceived(void* rawPacket, int* rawPacketSize);
 
 private:
   Game* m_selectedGame;
-  void* m_manager;
+  managerUnion manager;
 
 protected:
   void run() {
@@ -103,27 +105,20 @@ protected:
     //Sélection du packetManager selon le jeu
     switch (*m_selectedGame) {
       case Game::F12020:
-        m_manager = new F12020_packetManager;
-        emit managerReady(m_manager);
-        while (true) {
-          rawPacketSize = recvfrom(appSocket, &rawPacket, sizeof rawPacket, 0, (sockaddr*)&gameAddress, &gameAddressSize);
-          //On envoi le paquet au packetManager pour traitement
-          static_cast<F12020_packetManager*>(m_manager)->handlePacket(&rawPacket, &rawPacketSize);
-        }
+        manager.F12020_manager = new F12020_packetManager(this);
         break;
 
       default:
-        m_manager = new F12020_packetManager;
-        emit managerReady(m_manager);
-        while (true) {
-          rawPacketSize = recvfrom(appSocket, &rawPacket, sizeof rawPacket, 0, (sockaddr*)&gameAddress, &gameAddressSize);
-          //On envoi le paquet au packetManager pour traitement
-          static_cast<F12020_packetManager*>(m_manager)->handlePacket(&rawPacket, &rawPacketSize);
-        }
+        manager.F12020_manager = new F12020_packetManager(this);
         break;
     };
-    close(appSocket);
-    exit(1);
+    emit managerReady(&manager);
+    while (true) {
+      rawPacketSize = recvfrom(appSocket, &rawPacket, sizeof rawPacket, 0, (sockaddr*)&gameAddress, &gameAddressSize);
+      //On envoi le paquet au packetManager pour traitement
+      emit dataReceived(&rawPacket, &rawPacketSize);
+      //Créer plutot un signal, lors de la création du manager, celui ci se connecte et réceptionne le paquet
+    }
   }
 
 };

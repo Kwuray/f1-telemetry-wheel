@@ -5,7 +5,7 @@
 #include <QProgressBar>
 #include <QObject>
 #include "../../headers/games/games.hpp"
-#include "../../headers/games/F1-2020/packetManager.hpp"
+
 #include "../../headers/games/F1-2020/packets-structures/carTelemetry.hpp"
 
 class throttleBar : public QProgressBar {
@@ -15,7 +15,7 @@ class throttleBar : public QProgressBar {
 
 
   public:
-    throttleBar (QWidget* parent, Game* selectedGame, void* manager) : QProgressBar(parent) {
+    throttleBar (QWidget* parent, Game* selectedGame, managerUnion* manager) : QProgressBar(parent) {
       m_selectedGame = selectedGame;
       this->setStyleSheet("QProgressBar::chunk { background-color: green } QProgressBar { text-align: center; border: 2px solid grey }");
       this->setOrientation(Qt::Vertical);
@@ -24,10 +24,10 @@ class throttleBar : public QProgressBar {
       this->setFixedSize(50, 300);
       switch (*m_selectedGame) {
         case Game::F12020:
-          QObject::connect(static_cast<F12020_packetManager*>(manager), SIGNAL(dataReady(uint8_t, void*)), this, SLOT(updateData(uint8_t, void*)));
+          QObject::connect(manager->F12020_manager, SIGNAL(dataReady(uint8_t, void*)), this, SLOT(updateData(uint8_t, void*)));
           break;
         default:
-          QObject::connect(static_cast<F12020_packetManager*>(manager), SIGNAL(dataReady(uint8_t, void*)), this, SLOT(updateData(uint8_t, void*)));
+          QObject::connect(manager->F12020_manager, SIGNAL(dataReady(uint8_t, void*)), this, SLOT(updateData(uint8_t, void*)));
           break;
       }
 
