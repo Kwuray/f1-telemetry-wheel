@@ -1,7 +1,7 @@
 SOURCES += ../sources/main.cpp
 
 HEADERS += ../sources/feedThread.hpp
-HEADERS += ../sources/display-modes/raceDisplay.hpp
+HEADERS += ../sources/display-modes/timeAttack.hpp
 HEADERS += ../sources/elements/throttleBar.hpp
 HEADERS += ../sources/elements/brakeBar.hpp
 

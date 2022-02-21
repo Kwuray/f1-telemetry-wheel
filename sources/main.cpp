@@ -1,5 +1,5 @@
 #include <QApplication>
-#include "display-modes/raceDisplay.hpp"
+#include "display-modes/timeAttack.hpp"
 #include "feedThread.hpp"
 #include "../headers/games/games.hpp"
 #include <thread>

@@ -9,7 +9,7 @@
 #define PORT "20778"
 #include "../headers/games/games.hpp"
 #include "../headers/games/F1-2020/packetManager.hpp"
-#include "display-modes/raceDisplay.hpp"
+#include "display-modes/timeAttack.hpp"
 #include <QThread>
 #include <iostream>
 #include <sys/types.h>
